@@ -1,5 +1,6 @@
 export type RootStackParamList = {
-  Home: undefined;
+  Onboarding: undefined;
+  List: undefined;
   Details: {
     animeId: number;
   };

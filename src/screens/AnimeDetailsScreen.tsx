@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import axios from 'axios';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList, AnimeDetails} from '../types';
+import {useAnimes} from '../hooks/animes';
+import {useFavorites} from '../hooks/favorites';
+import Loading from '../components/Loading';
+import {RootStackParamList} from '../types';
 
 type AnimeDetailsScreenProps = {
   route: RouteProp<RootStackParamList, 'Details'>;
@@ -10,31 +13,31 @@ type AnimeDetailsScreenProps = {
 
 const AnimeDetailsScreen: React.FC<AnimeDetailsScreenProps> = ({route}) => {
   const {animeId} = route.params;
-  const [animeDetails, setAnimeDetails] = useState<AnimeDetails | null>(null);
+  const {animes} = useAnimes();
+  const {favorites, toggleFavorite} = useFavorites();
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const response = await axios.get<{data: AnimeDetails}>(
-          `https://api.jikan.moe/v4/anime/${animeId}`,
-        );
-        setAnimeDetails(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const animeDetails = animes.find(anime => anime.mal_id === animeId);
+  const isFavorited = favorites.includes(animeId);
 
-    fetchDetails();
-  }, [animeId]);
+  const handleToggleFavorite = () => {
+    toggleFavorite(animeId);
+  };
 
   if (!animeDetails) {
-    return <Text>Loading...</Text>;
+    return <Loading visible />;
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{animeDetails.title}</Text>
       <Text>{animeDetails.synopsis}</Text>
+      <TouchableOpacity onPress={handleToggleFavorite}>
+        <Icon
+          name={isFavorited ? 'favorite' : 'favorite-border'}
+          size={30}
+          color="red"
+        />
+      </TouchableOpacity>
     </View>
   );
 };

@@ -1,11 +1,7 @@
-import {useEffect, useRef} from 'react';
-import {useSelector, useDispatch, TypedUseSelectorHook} from 'react-redux';
-import debounce from 'lodash.debounce';
-import {RootState, AppDispatch} from '../app/store';
+import {RootState} from '../app/store';
 import {fetchAnimes} from '../features/animes/animesSlice';
-
-const useAppDispatch = () => useDispatch<AppDispatch>();
-const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+import {useAppDispatch, useAppSelector} from './app';
+import {AnimeQuery} from '../types';
 
 export const useAnimes = () => {
   const dispatch = useAppDispatch();
@@ -13,24 +9,9 @@ export const useAnimes = () => {
     (state: RootState) => state.animes,
   );
 
-  // useRef to store the debounced function
-  const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
-
-  if (!debouncedSearchRef.current) {
-    // Initialize the debounced function
-    debouncedSearchRef.current = debounce(query => {
-      dispatch(fetchAnimes(query));
-    }, 500);
-  }
-
-  useEffect(() => {
-    // Cleanup the debounced function on unmount
-    return () => {
-      if (debouncedSearchRef.current) {
-        debouncedSearchRef.current.cancel();
-      }
-    };
-  }, []);
+  const search = (query: AnimeQuery) => {
+    dispatch(fetchAnimes(query));
+  };
 
   return {
     animes,
@@ -38,6 +19,6 @@ export const useAnimes = () => {
     error,
     page,
     hasMore,
-    debouncedSearch: debouncedSearchRef.current,
+    search,
   };
 };

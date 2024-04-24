@@ -1,79 +1,61 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Anime App
 
-# Getting Started
+Anime App is a mobile application built with React Native, designed to provide anime enthusiasts with a user-friendly interface to browse, search, and favorite anime titles. The app utilizes a modern UI/UX design, featuring pagination, search functionalities, and a favorites system.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Getting Started
 
-## Step 1: Start the Metro Server
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+### Prerequisites
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Before running the project, ensure you have the following installed:
+- Node.js
+- npm or yarn
+- React Native environment setup ([React Native CLI Quickstart](https://reactnative.dev/docs/environment-setup))
 
-```bash
-# using npm
-npm start
+### Installing
 
-# OR using Yarn
-yarn start
-```
+A step by step series of examples that tell you how to get a development environment running:
 
-## Step 2: Start your Application
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/chriswudev/AnimeApp.git
+   ```
+2. Install dependencies:
+   ```bash
+   cd AnimeApp
+   npm install
+   # OR using Yarn
+   yarn install
+   ```
+3. Run the app:
+   ```bash
+   npx react-native run-android
+   ```
+   or
+   ```bash
+   npx react-native run-ios
+   ```
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Libraries Used
 
-### For Android
+- **React Navigation**: Used for managing the navigation between screens.
+- **Redux and Redux Toolkit**: State management tools used to manage the state of favorites and fetching data.
+- **Axios**: For making API requests to fetch anime data.
+- **AsyncStorage**: To persist favorite animes locally on the device.
+- **React Native Vector Icons**: To enhance the UI with icons.
 
-```bash
-# using npm
-npm run android
+## Screenshots
 
-# OR using Yarn
-yarn android
-```
+Here is a gif of the app in action:
 
-### For iOS
+![Demo](./demo/demo.gif)
 
-```bash
-# using npm
-npm run ios
+## Future Improvements
 
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+With more time, the following improvements would be considered:
+- **Offline Support**: Implementing full offline support so users can view previously loaded animes even when they're offline.
+- **Advanced Search**: Adding filter options to the search, allowing users to narrow down results based on genre, year, etc.
+- **User Accounts and Syncing**: Integrating user account creation and allowing users to sync their favorites across multiple devices.
+- **Performance Optimization**: Implement lazy loading images and better state management to improve app performance and responsiveness.
+- **Accessibility Enhancements**: Ensuring the app is fully accessible, including screen reader support and enhanced touch targets for better usability.

@@ -30,7 +30,6 @@ const favoritesSlice = createSlice({
   name: 'favorites',
   initialState: {
     favorites: [] as number[],
-    status: 'idle',
     error: null,
   },
   reducers: {},

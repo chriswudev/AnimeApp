@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, ActivityIndicator} from 'react-native';
 
-type LoadingProps = {
+interface LoadingProps {
   visible: boolean;
-};
+}
 
 const Loading: React.FC<LoadingProps> = ({visible}) => {
   if (visible) {

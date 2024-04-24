@@ -1,3 +1,5 @@
+import {AnimeApiStatus} from './enums';
+
 export type RootStackParamList = {
   Onboarding: undefined;
   List: undefined;
@@ -21,7 +23,12 @@ export type Anime = {
   mal_id: number;
   title: string;
   synopsis: string;
-  images: {jpg: {image_url: string}};
+  images: {jpg: {image_url: string; small_image_url: string}};
+};
+
+export type AnimeQuery = {
+  query?: string;
+  page?: number;
 };
 
 export type AnimePayload = {
@@ -31,7 +38,7 @@ export type AnimePayload = {
 
 export type AnimeState = {
   animes: Anime[];
-  status: 'idle' | 'loading' | 'loadingMore' | 'succeeded' | 'failed';
+  status: AnimeApiStatus;
   error: string | null;
   page: number;
   hasMore: boolean;

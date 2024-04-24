@@ -1,108 +1,75 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {View, FlatList, StyleSheet} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import debounce from 'lodash.debounce';
 import {useAnimes} from '../hooks/animes';
 import {useFavorites} from '../hooks/favorites';
 import Loading from '../components/Loading';
+import Searchbar from '../components/Searchbar';
+import ListItem from '../components/ListItem';
 import {RootStackParamList} from '../types';
+import {Screen, AnimeApiStatus} from '../enums';
 
 type AnimeListScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'List'>;
+  navigation: StackNavigationProp<RootStackParamList, Screen.List>;
 };
 
 const AnimeListScreen: React.FC<AnimeListScreenProps> = ({navigation}) => {
-  const {animes, hasMore, page, status, debouncedSearch} = useAnimes();
-  const {favorites} = useFavorites();
+  const {animes, hasMore, page, status, search} = useAnimes();
+  const {favorites, toggleFavorite} = useFavorites();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = (text: string) => {
+  const handleSearch = debounce((text: string) => {
     setSearchQuery(text);
-  };
+  }, 500);
 
   const handleLoadMore = () => {
-    if (hasMore && status !== 'loadingMore') {
-      debouncedSearch({query: searchQuery, page: page + 1});
+    if (hasMore && status !== AnimeApiStatus.LoadingMore) {
+      search({query: searchQuery, page: page + 1});
     }
   };
 
   useEffect(() => {
-    debouncedSearch(searchQuery);
-  }, [searchQuery, debouncedSearch]);
-
-  if (status === 'loading') {
-    return <Loading visible />;
-  }
+    search({query: searchQuery, page: 1});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        onChangeText={handleSearch}
-        value={searchQuery}
-        placeholder="Search Anime"
-      />
-      <FlatList
-        data={animes}
-        keyExtractor={item => item.mal_id.toString()}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Details', {animeId: item.mal_id})
-            }>
-            <Text
-              style={[
-                styles.listItem,
-                favorites.includes(item.mal_id) ? styles.favorited : undefined,
-              ]}>
-              {item.title}
-            </Text>
-            <Icon
-              name={
-                favorites.includes(item.mal_id) ? 'favorite' : 'favorite-border'
+      <Searchbar onChangeText={handleSearch} placeholder="Search Anime" />
+      {status === AnimeApiStatus.Loading && animes.length === 0 ? (
+        <Loading visible />
+      ) : (
+        <FlatList
+          data={animes}
+          keyExtractor={item => item.mal_id.toString()}
+          renderItem={({item}) => (
+            <ListItem
+              title={item.title}
+              key={item.mal_id}
+              isFavorited={favorites.includes(item.mal_id)}
+              imageUrl={item.images.jpg.small_image_url}
+              onItemPress={() =>
+                navigation.navigate(Screen.Details, {animeId: item.mal_id})
               }
-              size={24}
-              color="red"
-              style={styles.icon}
+              onToggleFavorite={() => toggleFavorite(item.mal_id)}
             />
-          </TouchableOpacity>
-        )}
-        onEndReached={handleLoadMore}
-        ListFooterComponent={<Loading visible={status === 'loadingMore'} />}
-      />
+          )}
+          onEndReached={handleLoadMore}
+          ListFooterComponent={
+            <Loading visible={status === AnimeApiStatus.LoadingMore} />
+          }
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 0,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  listItem: {
-    padding: 10,
-    fontSize: 18,
-  },
-  favorited: {
-    color: 'red',
-  },
-  icon: {
-    marginLeft: 10,
   },
 });
 

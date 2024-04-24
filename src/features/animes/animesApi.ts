@@ -1,16 +1,9 @@
 import axios from 'axios';
+import {AnimeQuery} from '../../types';
 
-export const getAnimes = async ({
-  query,
-  page,
-}: {
-  query?: string;
-  page?: number;
-}) => {
+export const getAnimes = async ({query = '', page = 1}: AnimeQuery) => {
   const response = await axios.get(
-    `https://api.jikan.moe/v4/anime?q=${query ?? ''}&page=${
-      page ?? 1
-    }&limit=20`,
+    `https://api.jikan.moe/v4/anime?q=${query}&page=${page}&limit=20`,
   );
   return response.data;
 };

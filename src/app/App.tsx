@@ -6,6 +6,7 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import AnimeListScreen from '../screens/AnimeListScreen';
 import AnimeDetailsScreen from '../screens/AnimeDetailsScreen';
 import store from './store';
+import {Screen} from '../enums';
 import {RootStackParamList} from '../types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -14,19 +15,19 @@ function App(): React.JSX.Element {
   return (
     <ReduxProvider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Onboarding">
+        <Stack.Navigator initialRouteName={Screen.Onboarding}>
           <Stack.Screen
-            name="Onboarding"
+            name={Screen.Onboarding}
             component={OnboardingScreen}
             options={{title: 'Welcome'}}
           />
           <Stack.Screen
-            name="List"
+            name={Screen.List}
             component={AnimeListScreen}
             options={{title: 'Anime List'}}
           />
           <Stack.Screen
-            name="Details"
+            name={Screen.Details}
             component={AnimeDetailsScreen}
             options={{title: 'Details'}}
           />

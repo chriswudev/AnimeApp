@@ -1,17 +1,14 @@
 import {useEffect} from 'react';
-import {useSelector, useDispatch, TypedUseSelectorHook} from 'react-redux';
-import {RootState, AppDispatch} from '../app/store';
+import {RootState} from '../app/store';
 import {
   fetchFavorites,
   toggleFavorite,
 } from '../features/favorites/favoritesSlice';
-
-const useAppDispatch = () => useDispatch<AppDispatch>();
-const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+import {useAppDispatch, useAppSelector} from './app';
 
 export const useFavorites = () => {
   const dispatch = useAppDispatch();
-  const {favorites, status, error} = useAppSelector(
+  const {favorites, error} = useAppSelector(
     (state: RootState) => state.favorites,
   );
 
@@ -29,7 +26,6 @@ export const useFavorites = () => {
 
   return {
     favorites,
-    status,
     error,
     fetchFavorites: dispatchFetchFavorites,
     toggleFavorite: displatchToggleFavorite,
